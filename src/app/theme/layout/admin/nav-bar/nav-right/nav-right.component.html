@@ -23,7 +23,7 @@
           <li class="n-title">
             <p class="m-b-0"><strong> As Host</strong></p>
           </li>
-          <li class="notification" [ngStyle]="{'cursor':'pointer'}" *ngFor="let Notification of Notifications_host | slice:0:2" (click)="Join_Meeting_by_Host(Notification)" class="list">
+          <li ngbDropdownToggle data-toggle="dropdown" class="notification" [ngStyle]="{'cursor':'pointer'}" *ngFor="let Notification of Notifications_host | slice:0:2" (click)="Join_Meeting_by_Host(Notification)" class="list">
             <div class="media">
               <img class="img-radius" src="assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
               <div class="media-body">
@@ -39,7 +39,7 @@
           <li class="n-title">
             <p class="m-b-0"><strong> As Attendee</strong></p>
           </li>
-          <li class="notification" [ngStyle]="{'cursor':'pointer'}" *ngFor="let Notification of Notifications | slice:0:2" (click)="Join_Meeting_by_attendee(Notification)" class="list">
+          <li ngbDropdownToggle data-toggle="dropdown" class="notification" [ngStyle]="{'cursor':'pointer'}" *ngFor="let Notification of Notifications | slice:0:2" (click)="Join_Meeting_by_attendee(Notification)" class="list">
             <div class="media">
               <img class="img-radius" src="assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
               <div class="media-body">
