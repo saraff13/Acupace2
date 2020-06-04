@@ -34,7 +34,7 @@ const UserLists=[
       }
 ];
 
-Injectable()
+@Injectable()
 export class UserList{
     public fetch(){
         return UserLists;
