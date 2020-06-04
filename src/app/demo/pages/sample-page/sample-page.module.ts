@@ -6,6 +6,7 @@ import { SamplePageComponent } from './sample-page.component';
 import {SharedModule} from '../../../theme/shared/shared.module';
 import {WebServiceService} from '../../../providers/web-service/web-service.service'
 import { NgxScreenfullModule } from '@ngx-extensions/screenfull';
+import {MeetingLists} from '../../../app-meeting_list'
 @NgModule({
   declarations: [SamplePageComponent],
   imports: [
@@ -15,7 +16,7 @@ import { NgxScreenfullModule } from '@ngx-extensions/screenfull';
     NgxScreenfullModule,
     NgxAgoraModule.forRoot({AppID: 'c023596a5f6d4c949d9b207101ee8c74' })
   ],
-  providers:[WebServiceService],
+  providers:[WebServiceService,MeetingLists],
   bootstrap: [SamplePageComponent]
 })
 export class SamplePageModule { }

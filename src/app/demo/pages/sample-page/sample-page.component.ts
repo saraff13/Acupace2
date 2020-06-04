@@ -6,6 +6,7 @@ import {WebServiceService} from '../../../providers/web-service/web-service.serv
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ScreenfullService } from '@ngx-extensions/screenfull';
+import {MeetingLists} from '../../../app-meeting_list';
 @Component({
   selector: 'app-sample-page',
   templateUrl: './sample-page.component.html',
@@ -43,25 +44,30 @@ export class SamplePageComponent{
   readonly mode$: Observable<string>;
   public cardClass:string;
   public fullIcon: string;
-  constructor(private ngxAgoraService: NgxAgoraService,private router:Router, private route: ActivatedRoute,private webservice:WebServiceService,public readonly screenfullService: ScreenfullService) {
+  public Joined_user_details:any;
+  constructor(private ngxAgoraService: NgxAgoraService,private router:Router, private route: ActivatedRoute,private webservice:WebServiceService,public readonly screenfullService: ScreenfullService,private Meeting_list:MeetingLists) {
     this.mode$ = this.screenfullService.fullScreenActive$.pipe(
       map(active => (active ? 'active' : 'inactive'))
      );
      this.fullIcon = 'icon-maximize';
   }
   ngOnInit(){
-    this.sub = this.route
-    .queryParams
-    .subscribe(params => {
-      // Defaults to 0 if no query param provided.
-      this.uid =params['room_id'];
-      this.channel_name=params['channel'];
-      this.id=params['id'];
-    });
+    this.Joined_user_details=this.Meeting_list.fetch_Joined_Stream();
+    if(this.Joined_user_details.host_id==JSON.parse(localStorage.getItem("userDetails")).result.ID){
+      this.uid=this.Joined_user_details.host_room_id;
+    }
+    else{
+      this.uid=this.Joined_user_details.room_id;
+    }
+    this.channel_name =  this.Joined_user_details.channel_name;
+    this.id =  this.Joined_user_details.id;
+    console.log(this.uid);
+    console.log(this.channel_name);
+    console.log(this.id);
     this.startCall();
   }
   ngOnDestroy(){
-    this.sub.unsubscribe();
+    
   }
   startCall(){
     this.activeCall=true;

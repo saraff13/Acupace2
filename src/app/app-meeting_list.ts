@@ -15,7 +15,8 @@ export interface MeetingList{
 }
 const UserLists=[];
 const HostLists=[];
-Injectable({
+const Join_List_stream=[];
+@Injectable({
     providedIn: 'root'
 })
 export class MeetingLists{
@@ -25,6 +26,9 @@ export class MeetingLists{
     }
     public Add_host(Notifications:any){
         HostLists.push(Notifications);
+    }
+    public Join_Stream(Notification:any){
+        Join_List_stream.push(Notification);
     }
     public fetch(){
         if(UserLists.length!=0){
@@ -39,5 +43,12 @@ export class MeetingLists{
             return HostLists[0];
         }
         console.log("Hostlist is empty")
+    }
+    public fetch_Joined_Stream(){
+        if(Join_List_stream.length!=0){
+            console.log(Join_List_stream[0]);
+            return Join_List_stream[0];
+        }
+        console.log("Join Stream is empty");
     }
 }
