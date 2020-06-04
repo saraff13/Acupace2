@@ -61,6 +61,7 @@ export class SamplePageComponent{
     }
     this.channel_name =  this.Joined_user_details.channel_name;
     this.id =  this.Joined_user_details.id;
+    this.uid=this.uid+"_"+JSON.parse(localStorage.getItem("userDetails")).result.name;
     this.startCall();
   }
   ngOnDestroy(){
@@ -109,6 +110,7 @@ export class SamplePageComponent{
   }
   private assignClientHandlers(): void {
     this.client.on(ClientEvent.LocalStreamPublished, evt => {
+      console.log(`${this.localStream.getId()} joined the channel`)
       console.log('Publish local stream successfully');
     });
 

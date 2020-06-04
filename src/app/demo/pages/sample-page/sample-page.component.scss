@@ -116,7 +116,7 @@ p {
   border: #0984e3 5px solid;
 }
 .agora_remote:after{
-  content:"Overlay Content";
+  content:attr(data-after-content);
   color: white;
   font-size: 20px;
   align-self: center;
