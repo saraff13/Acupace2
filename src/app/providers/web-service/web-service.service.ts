@@ -49,7 +49,7 @@ export class WebServiceService {
   docParams: any;
   data: any;
   imageBaseURL: any = '';
-  api: any = 'http://acupace.co.in'; 
+  api: any = 'https://acupace.in'; 
   apiUrlv1: any = this.api + '/videoconfwebservice/';    
   loader: any;
   accessToken: any;

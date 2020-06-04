@@ -15,19 +15,10 @@ const routes: Routes = [
         path: '',
         redirectTo: 'overview',
         pathMatch: 'full',
-
-      },
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./demo/dashboard/dashboard.module').then(module => module.DashboardModule)
       },
       {
         path: 'layout',
         loadChildren: () => import('./demo/pages/layout/layout.module').then(module => module.LayoutModule)
-      },
-      {
-        path: 'basic',
-        loadChildren: () => import('./demo/ui-elements/ui-basic/ui-basic.module').then(module => module.UiBasicModule)
       },
       {
         path: 'users',
@@ -36,10 +27,6 @@ const routes: Routes = [
       {
         path: 'groups',
         loadChildren: () => import('./demo/pages/groups/groups.module').then(module => module.GroupsModule)
-      },
-      {
-        path: 'tbl-bootstrap',
-        loadChildren: () => import('./demo/pages/tables/tbl-bootstrap/tbl-bootstrap.module').then(module => module.TblBootstrapModule)
       },
       {
         path: 'overview',

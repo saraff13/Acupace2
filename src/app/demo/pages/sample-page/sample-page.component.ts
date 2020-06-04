@@ -61,9 +61,6 @@ export class SamplePageComponent{
     }
     this.channel_name =  this.Joined_user_details.channel_name;
     this.id =  this.Joined_user_details.id;
-    console.log(this.uid);
-    console.log(this.channel_name);
-    console.log(this.id);
     this.startCall();
   }
   ngOnDestroy(){
