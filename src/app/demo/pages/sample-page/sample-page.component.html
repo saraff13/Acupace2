@@ -29,7 +29,7 @@
 			<div class="col-10">
 				<div #widgetsContent class="middle">
 					<div [ngClass]="'agora_remote'" *ngFor="let remote of remoteCalls" [id]="remote"
-						(click)="Toggle_Stream(remote)" [ngStyle]="{'cursor':'pointer'}" data-after-content="remote"></div>
+						(click)="Toggle_Stream(remote)" [ngStyle]="{'cursor':'pointer'}" attr.data-after-content="{{remote}}"></div>
 				</div>
 			</div>
 			<div class="col-sm">
