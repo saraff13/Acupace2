@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import * as moment from 'moment';
 import {MeetingLists} from '../../../../../app-meeting_list'
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import {NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'app-nav-right',
   templateUrl: './nav-right.component.html',
@@ -21,7 +22,7 @@ export class NavRightComponent implements OnInit {
   Notifications_host:any;
   timerid:any;
   current_time:any;
-  constructor(private webservice:WebServiceService, private router:Router,private Meeting_list:MeetingLists) { }
+  constructor(private webservice:WebServiceService, private router:Router,private Meeting_list:MeetingLists,private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     if (localStorage.getItem("userDetails") != '' || localStorage.getItem("userDetails") != undefined) {
       this.userId = JSON.parse(localStorage.getItem("userDetails")).result.ID;
@@ -66,7 +67,35 @@ export class NavRightComponent implements OnInit {
     }
   }
   GetNotification(){
-    this.Notifications=this.Meeting_list.fetch();
-    this.Notifications_host=this.Meeting_list.fetch_host();
+    this.InvitationList();
+    this.InvitationList_host();
+  }
+  InvitationList(){
+    this.SpinnerService.show();
+    let bodystring = {
+      "attendee_email": JSON.parse(localStorage.getItem("userDetails")).result.user_email
+    };
+    this.webservice.NotificationList(bodystring)
+      .then(response => {
+        this.Notifications = response;
+        console.log(this.Notifications);
+        this.Notifications=this.Notifications.result;
+      }, (err) => {
+        console.log("Error" + err);
+      });
+  }
+  InvitationList_host(){
+    let bodystring = {
+      "host_id": JSON.parse(localStorage.getItem("userDetails")).result.ID
+    };
+    this.webservice.NotificationList_Host(bodystring)
+      .then(response => {
+        this.Notifications_host = response;
+        console.log(this.Notifications_host);
+        this.SpinnerService.hide();
+        this.Notifications_host=this.Notifications_host.result;
+      }, (err) => {
+        console.log("Error" + err);
+      });
   }
 }

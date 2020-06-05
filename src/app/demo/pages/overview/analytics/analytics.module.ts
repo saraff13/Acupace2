@@ -5,14 +5,12 @@ import { AnalyticsRoutingModule } from './analytics-routing.module';
 import { AnalyticsComponent } from './analytics.component';
 import {SharedModule} from '../../../../theme/shared/shared.module';
 import {MeetingLists} from '../../../../app-meeting_list';
-import {NgxSpinnerModule } from "ngx-spinner";  
 @NgModule({
   declarations: [AnalyticsComponent],
   imports: [
     CommonModule,
     AnalyticsRoutingModule,
-    SharedModule,
-    NgxSpinnerModule
+    SharedModule
   ],
   providers:[MeetingLists,WebServiceService]
 })

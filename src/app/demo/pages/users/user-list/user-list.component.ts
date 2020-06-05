@@ -5,7 +5,7 @@ import {MeetingLists} from '../../../../app-meeting_list';
 import * as moment from 'moment';
 import {Router} from '@angular/router';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
+import {NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -16,7 +16,7 @@ export class UserListComponent implements OnInit {
   public Notifications:any;
   timerId:any;
   current_time:any;
-  constructor(public users:UserList, private webservice:WebServiceService,public Meetings:MeetingLists,private router:Router) {
+  constructor(public users:UserList, private webservice:WebServiceService,public Meetings:MeetingLists,private router:Router,private SpinnerService: NgxSpinnerService) {
   }
   ngOnInit() {
     this.InvitationList();
@@ -40,7 +40,17 @@ export class UserListComponent implements OnInit {
     }
   }
   InvitationList(){
-    this.Notifications=this.Meetings.fetch();
-    console.log(this.Notifications);
+    this.SpinnerService.show();
+    let bodystring = {
+      "attendee_email": JSON.parse(localStorage.getItem("userDetails")).result.user_email
+    };
+    this.webservice.NotificationList(bodystring)
+      .then(response => {
+        this.Notifications = response;
+        this.Notifications=this.Notifications.result;
+        this.SpinnerService.hide();
+      }, (err) => {
+        console.log("Error" + err);
+      });
   }
 }
