@@ -39,6 +39,17 @@ p {
   border: #2d3436 6px solid;
 
 }
+#agora_local-fullscreen:after{
+  content:attr(data-after-content-local);
+  color: white;
+  font-size: 50px;
+  align-self: center;
+  position: absolute;
+  top:90%;
+  right:10%;
+  z-index:1;
+  font-weight: bold;
+}
 .agora_remote{
   background-color: #404040;
   height: 115px;

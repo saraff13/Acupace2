@@ -44,7 +44,11 @@ export class SamplePageComponent{
   readonly mode$: Observable<string>;
   public cardClass:string;
   public fullIcon: string;
+  public roomId:string;
   public Joined_user_details:any;
+  public localname:any;
+  public remote_name:any;
+  public previous_element_ref:any;
   constructor(private ngxAgoraService: NgxAgoraService,private router:Router, private route: ActivatedRoute,private webservice:WebServiceService,public readonly screenfullService: ScreenfullService,private Meeting_list:MeetingLists) {
     this.mode$ = this.screenfullService.fullScreenActive$.pipe(
       map(active => (active ? 'active' : 'inactive'))
@@ -54,18 +58,45 @@ export class SamplePageComponent{
   ngOnInit(){
     this.Joined_user_details=this.Meeting_list.fetch_Joined_Stream();
     if(this.Joined_user_details.host_id==JSON.parse(localStorage.getItem("userDetails")).result.ID){
-      this.uid=this.Joined_user_details.host_room_id;
+      this.roomId=this.Joined_user_details.host_room_id;
     }
     else{
-      this.uid=this.Joined_user_details.room_id;
+      this.roomId=this.Joined_user_details.room_id;
     }
     this.channel_name =  this.Joined_user_details.channel_name;
     this.id =  this.Joined_user_details.id;
-    this.uid=this.uid+" "+JSON.parse(localStorage.getItem("userDetails")).result.name;
+    this.uid=this.roomId+" "+JSON.parse(localStorage.getItem("userDetails")).result.name;
+    this.localname=JSON.parse(localStorage.getItem("userDetails")).result.name;
     this.startCall();
   }
   ngOnDestroy(){
-    
+    this.client.leave(() => {
+      this.activeCall = false;
+      this.remoteCalls=[];
+      this.localStream.close();
+      let bodystring = {
+        "id": this.id,
+        "room_id":this.roomId
+      };
+      this.webservice.Update_meeting(bodystring)
+        .then(response => {
+          this.Status=response;
+          this.Status=this.Status.result;
+          Swal.fire(
+            'Meeting Ended',
+            ''+ this.Status+'',
+            'success'
+          )
+        }, (err) => {
+          console.log("Error" + err);
+      });
+    }, (err) => {
+      console.log("Leave channel failed");
+    });
+  }
+  check(el){
+    alert('myId=' + el.getAttribute("data-after-content-local"));
+    el.setAttribute("data-after-content-local","Amar");
   }
   startCall(){
     this.activeCall=true;
@@ -231,8 +262,9 @@ export class SamplePageComponent{
             this.localStream.close();
             let bodystring = {
               "id": this.id,
-              "room_id":this.uid
+              "room_id":this.roomId
             };
+            console.log(bodystring);
             this.webservice.Update_meeting(bodystring)
               .then(response => {
                 this.Status=response;
@@ -271,22 +303,28 @@ export class SamplePageComponent{
   private getRemoteId(stream: Stream): string {
     return `agora_remote-${stream.getId()}`;
   }
-  Toggle_Stream(remoteId:any){
+  Toggle_Stream(remoteId,el){
     if(this.remoteStreams[this.localCallId]!=this.localStream){
       if(this.LocalStreamID!=remoteId){
         this.Toggle(this.localCallId,this.LocalStreamID);
         this.LocalStreamID = this.localCallId;
+        this.Toggle_name(this.previous_element_ref);
         this.Toggle(this.localCallId,remoteId);
         this.LocalStreamID = remoteId;
+        this.Toggle_name(el);
       }
       else{
         this.Toggle(this.localCallId,remoteId);
         this.LocalStreamID = this.localCallId;
+        this.previous_element_ref=el;
+        this.Toggle_name(el);
       }
     }
     else{
       this.Toggle(this.localCallId,remoteId);
       this.LocalStreamID=remoteId;
+      this.previous_element_ref=el;
+      this.Toggle_name(el);
     }
   }
   Toggle(local:any,remote:any){
@@ -297,6 +335,11 @@ export class SamplePageComponent{
       let stream:Stream=this.remoteStreams[local];
       this.remoteStreams[local]=this.remoteStreams[remote];
       this.remoteStreams[remote]=stream;
+  }
+  Toggle_name(el){
+    this.remote_name=el.getAttribute("data-after-content");
+    el.setAttribute("data-after-content",this.localname);
+    this.localname=this.remote_name;
   }
   toggleScreen(){
     this.cardClass=this.cardClass==="full-card"?"":"full-card";
