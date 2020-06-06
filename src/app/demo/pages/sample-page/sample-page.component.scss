@@ -112,8 +112,9 @@ p {
   border-radius: 10px;
 }
 .middle {
-  float: left;
-  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
   height: 150px;
   overflow: hidden;
   /*will change this to hidden later to deny scolling to user*/
@@ -141,13 +142,14 @@ p {
   font-size:48px;  
   color:#0984e3;
   position: relative;
-  right: 50px;
+  right: 20px;
   top: 40px;
 }
 #left_arrow{
   font-size:48px; 
   color:#0984e3;
   position: relative;
+  left:20px;
   top: 40px;
 }
 
